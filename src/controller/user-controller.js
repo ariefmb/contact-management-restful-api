@@ -1,5 +1,5 @@
-import { log } from "winston"
 import userService from "../service/user-service.js"
+
 const register = async (req, res, next) => {
     try {
         const result = await userService.register(req.body)

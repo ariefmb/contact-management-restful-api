@@ -71,7 +71,7 @@ const get = async (username) => {
 
     const user = await prismaClient.user.findUnique({
         where: {
-            username: user.username
+            username: username
         },
         select: {
             username: true,
@@ -89,7 +89,7 @@ const get = async (username) => {
 const update = async (request) => {
     const user = validate(updateUserValidation, request)
 
-    const totalUserInDB = await prismaClient.user.findMany({
+    const totalUserInDB = await prismaClient.user.count({
         where: {
             username: user.username
         }
@@ -108,7 +108,7 @@ const update = async (request) => {
         data.password = await bcrypt.hash(user.password, 10)
     }
 
-    return prismaClient.user.validate({
+    return prismaClient.user.update({
         where: {
             username: user.username
         },
