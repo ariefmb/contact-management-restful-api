@@ -1,7 +1,16 @@
-import { PrismaClient } from "../../generated/prisma/client"
-import { logger } from "./logging"
+import { PrismaMariaDb } from '@prisma/adapter-mariadb'
+import 'dotenv/config'
+import { PrismaClient } from "../../generated/prisma/client.ts"
+import { logger } from "./logging.js"
+
+const adapter = new PrismaMariaDb({
+    host: "localhost",
+    port: 3306,
+    connectionLimit: 5
+})
 
 export const prismaClient = new PrismaClient({
+    adapter,
     log: [
         {
         emit: 'event',

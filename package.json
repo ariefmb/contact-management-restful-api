@@ -7,22 +7,20 @@
     "type": "module",
     "main": "src/main.js",
     "scripts": {
-        "test": "jest"
-    },
-    "jest": {
-        "transform": {
-            "^.+\\.[t|j]sx?$": "babel-jest"
-        }
+        "test": "jest --watch"
     },
     "dependencies": {
+        "@prisma/adapter-mariadb": "^7.2.0",
         "@prisma/client": "^7.2.0",
         "bcrypt": "^6.0.0",
+        "dotenv": "^17.2.3",
         "express": "^5.2.1",
         "joi": "^18.0.2",
         "uuid": "^13.0.0",
         "winston": "^3.19.0"
     },
     "devDependencies": {
+        "@babel/core": "^7.28.5",
         "@babel/preset-env": "^7.28.5",
         "@types/bcrypt": "^6.0.0",
         "@types/express": "^5.0.6",
