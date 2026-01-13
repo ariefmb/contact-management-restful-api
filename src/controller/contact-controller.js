@@ -1,4 +1,3 @@
-import { prismaClient } from "../application/database.js"
 import contactService from "../service/contact-service.js"
 
 const create = async (req, res, next) => {
@@ -33,11 +32,10 @@ const get = async (req, res, next) => {
 const update = async (req, res, next) => {
     try {
         const user = req.user
-        const contactId = req.params.contactId
         const request = req.body
-        request.contactId = contactId
+        const contactId = req.body.id
 
-        const result = await prismaClient.update(user, request)
+        const result = await contactService.update(user, contactId, request)
 
         res.status(200).json({
             data: result

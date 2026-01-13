@@ -43,13 +43,13 @@ const get = async (user, contactId) => {
     return contact
 }
 
-const update = async (user, request) => {
+const update = async (user, contactId, request) => {
     const contact = validate(updateContactValidation, request)
 
     const totalContactInDB = await prismaClient.contact.count({
         where: {
             username: user.username,
-            id: contact.id
+            id: contactId
         }
     })
 
@@ -59,7 +59,7 @@ const update = async (user, request) => {
 
     return prismaClient.contact.update({
         where: {
-            id: contact.id
+            id: contactId
         },
         data: {
             first_name: contact.first_name,
