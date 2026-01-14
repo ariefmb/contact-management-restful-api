@@ -31,6 +31,7 @@ const create = async (user, contactId, request) => {
         data: address,
         select: {
             id: true,
+            title: true,
             street: true,
             city: true,
             province: true,
@@ -52,6 +53,7 @@ const get = async (user, contactId, addressId) => {
         },
         select: {
             id: true,
+            title: true,
             street: true,
             city: true,
             province: true,
@@ -88,6 +90,7 @@ const update = async (user, contactId, request) => {
             id: address.id
         },
         data: {
+            title: address.title,
             street: address.street,
             city: address.city,
             province: address.province,
@@ -96,6 +99,7 @@ const update = async (user, contactId, request) => {
         },
         select: {
             id: true,
+            title: true,
             street: true,
             city: true,
             province: true,
@@ -137,6 +141,7 @@ const list = async (user, contactId) => {
         },
         select: {
             id: true,
+            title: true,
             street: true,
             city: true,
             province: true,

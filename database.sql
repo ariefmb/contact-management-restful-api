@@ -5,4 +5,6 @@ desc contacts;
 desc addresses;
 
 select * from _prisma_migrations;
-select * from users;
+select * from addresses;
+
+UPDATE addresses SET title="Home Address";
