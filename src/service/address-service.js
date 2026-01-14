@@ -69,7 +69,7 @@ const get = async (user, contactId, addressId) => {
     return address
 }
 
-const update = async (user, contactId, request) => {
+const update = async (user, contactId, addressId, request) => {
     contactId = await checkContactExist(user, contactId)
 
     const address = validate(updateAddressValidation, request)
@@ -77,7 +77,7 @@ const update = async (user, contactId, request) => {
     const totalAddressInDB = await prismaClient.address.count({
         where: {
             contact_id: contactId,
-            id: address.id
+            id: addressId
         }
     })
 
@@ -87,7 +87,7 @@ const update = async (user, contactId, request) => {
 
     return prismaClient.address.update({
         where: {
-            id: address.id
+            id: addressId
         },
         data: {
             title: address.title,

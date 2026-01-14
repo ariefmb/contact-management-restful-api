@@ -21,7 +21,7 @@ const get = async (req, res, next) => {
         const contactId = req.params.contactId
         const addressId = req.params.addressId
     
-        const result = await addressService.create(user, contactId, addressId)
+        const result = await addressService.get(user, contactId, addressId)
         res.status(200).json({
             data: result
         })
@@ -33,12 +33,13 @@ const get = async (req, res, next) => {
 const update = async (req, res, next) => {
     try {
         const user = req.user
-        const contactId = req.params.contactId
-        const addresId = req.params.addresId
         const request = req.body
-        request.id = addresId
+        
+        const contactId = Number(req.params.contactId)
+        const addressId = Number(req.params.addressId)  
+        request.id = addressId
 
-        const result = await addressService.update(user, contactId, request)
+        const result = await addressService.update(user, contactId, addressId, request)
         res.status(200).json({
             data: result
         })

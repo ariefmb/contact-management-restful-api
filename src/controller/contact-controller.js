@@ -33,7 +33,9 @@ const update = async (req, res, next) => {
     try {
         const user = req.user
         const request = req.body
-        const contactId = req.body.id
+
+        const contactId = Number(req.params.contactId)
+        request.id = contactId
 
         const result = await contactService.update(user, contactId, request)
 
