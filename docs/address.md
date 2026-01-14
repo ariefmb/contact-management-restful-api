@@ -12,6 +12,7 @@ Request Body :
 
 ```json
 {
+    "title": "Home Address",
     "street": "Jalan ABC",
     "city": "Kota DEF",
     "province": "Provisi GHI",
@@ -26,6 +27,7 @@ Response Body Success :
 {
     "data": {
         "id": 1,
+        "title": "Home Address",
         "street": "Jalan ABC",
         "city": "Kota DEF",
         "province": "Provisi GHI",
@@ -55,6 +57,7 @@ Request Body :
 
 ```json
 {
+    "title": "Home Address",
     "street": "Jalan ABC",
     "city": "Kota DEF",
     "province": "Provisi GHI",
@@ -69,6 +72,7 @@ Response Body Success :
 {
     "data": {
         "id": 1,
+        "title": "Home Address",
         "street": "Jalan ABC",
         "city": "Kota DEF",
         "province": "Provisi GHI",
@@ -100,6 +104,7 @@ Response Body Success :
 {
     "data": {
         "id": 1,
+        "title": "Home Address",
         "street": "Jalan ABC",
         "city": "Kota DEF",
         "province": "Provisi GHI",
@@ -132,6 +137,7 @@ Response Body Success :
     "data": [
         {
             "id": 1,
+            "title": "Home Address",
             "street": "Jalan ABC",
             "city": "Kota DEF",
             "province": "Provisi GHI",
@@ -140,6 +146,7 @@ Response Body Success :
         },
         {
             "id": 2,
+            "title": "Work Address",
             "street": "Jalan ZYX",
             "city": "Kota WVU",
             "province": "Provisi TSR",
@@ -160,7 +167,7 @@ Response Body Error :
 
 ## Remove Address API
 
-Endpoint : **POST** `/api/contacts/:contactId/addresses`
+Endpoint : **DELETE** `/api/contacts/:contactId/addresses/:addressId`
 
 Headers :
 
