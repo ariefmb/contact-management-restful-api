@@ -1,5 +1,6 @@
 import cors from "cors"
 import express from 'express'
+import { deserializedToken } from "../middleware/deserialized-token.js"
 import { errorMiddleware } from '../middleware/error-middleware.js'
 import { routes } from "../routes/index.js"
 
@@ -22,7 +23,10 @@ const createServer = () => {
         })
     )
     
+    app.use(express.urlencoded({ extended: false }))
     app.use(express.json())
+
+    app.use(deserializedToken)
     app.use(errorMiddleware)
     
     app.use('/api', routes)

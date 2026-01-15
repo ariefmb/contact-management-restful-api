@@ -2,13 +2,14 @@ import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 import 'dotenv/config'
 import { PrismaClient } from "../../generated/prisma/client.ts"
 import logger from './logging.js'
+import CONFIG from '../config/environment.js'
 
 const adapter = new PrismaMariaDb({
     host: "localhost",
     port: 3306,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
+    user: CONFIG.db_user,
+    password: CONFIG.db_pass,
+    database: CONFIG.db_name,
     connectionLimit: 5
 })
 
@@ -53,7 +54,3 @@ prismaClient.$on('warn', (e) => {
 prismaClient.$on('info', (e) => {
     logger.info(e)
 })
-
-// prismaClient.$on('query', (e) => {
-//     logger.info(e)
-// })

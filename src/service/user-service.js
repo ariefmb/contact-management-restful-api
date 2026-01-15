@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
-import { prismaClient } from "../application/database.js"
 import { ResponseError } from "../error/response-error.js"
+import { prismaClient } from "../utils/database.js"
 import { getUserValidation, loginUserValidation, registerUserValidation, updateUserValidation } from "../validation/user-validation.js"
 import { validate } from "../validation/validation.js"
 

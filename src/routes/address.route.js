@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import addressController from '../controller/address-controller.js'
-import { authMiddleware } from '../middleware/auth-middleware.js'
+import { deserializedToken } from '../middleware/deserialized-token.js'
 
 export const AddressRouter = Router()
-AddressRouter.use(authMiddleware)
+AddressRouter.use(deserializedToken)
 
 AddressRouter.post('/', addressController.create)
 AddressRouter.get('/:addressId', addressController.get)

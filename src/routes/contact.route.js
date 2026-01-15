@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import contactController from '../controller/contact-controller.js'
-import { authMiddleware } from '../middleware/auth-middleware.js'
+import { deserializedToken } from '../middleware/deserialized-token.js'
 
 export const ContactRouter = Router()
-ContactRouter.use(authMiddleware)
+ContactRouter.use(deserializedToken)
 
 ContactRouter.post('/api/contacts', contactController.create)
 ContactRouter.get('/api/contacts/:contactId', contactController.get)
