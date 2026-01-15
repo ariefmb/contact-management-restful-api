@@ -1,6 +1,9 @@
 import { logger } from "./application/logging.js";
-import { web } from "./application/web.js";
+import createServer from "./application/server.js";
 
-web.listen(3000, () => {
-    logger.info("App start")
+const app = createServer()
+
+const port = 3000
+app.listen(port, () => {
+    logger.info(`Server is listening on port ${port}`)
 })
