@@ -1,8 +1,50 @@
 import { prismaClient } from "../application/database.js"
-import { searchContactValidation } from "../validation/contact-validation.js"
+import { ResponseError } from "../error/response-error.js"
+import { getContactValidation, searchContactValidation } from "../validation/contact-validation.js"
 import { validate } from "../validation/validation.js"
 
-const getList = async (request) => {
+const checkContactExist = async (contactId) => {
+    contactId = validate(getContactValidation, contactId)
+
+    const totalContactInDB = await prismaClient.contact.count({
+        where: {
+            username: 'dubi',
+            id: contactId
+        }
+    })
+
+    if (totalContactInDB !== 1) {
+        throw new ResponseError(404, "Contact is not found")
+    }
+
+    return contactId
+}
+
+const getContact = async (contactId) => {
+    contactId = validate(getContactValidation, contactId)
+
+    const contact = await prismaClient.contact.findFirst({
+        where: {
+            username: 'dubi',
+            id: contactId
+        },
+        select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: true,
+            phone: true,
+        }
+    })
+
+    if (!contact) {
+        throw new ResponseError(404, 'Contact is not found')
+    }
+
+    return contact
+}
+
+const getContactsList = async (request) => {
     request = validate(searchContactValidation, request)
 
     // skip = ((page - 1) * size)
@@ -68,4 +110,23 @@ const getList = async (request) => {
     }
 }
 
-export default { getList }
+const getAddressesList = async (contactId) => {
+    contactId = await checkContactExist(contactId)
+
+    return await prismaClient.address.findMany({
+        where: {
+            contact_id: contactId
+        },
+        select: {
+            id: true,
+            title: true,
+            street: true,
+            city: true,
+            province: true,
+            country: true,
+            postal_code: true
+        }
+    })
+}
+
+export default { getContact, getContactsList, getAddressesList }

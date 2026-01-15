@@ -1,6 +1,19 @@
 import guestService from "../service/guest-service.js"
 
-const getList = async (req, res, next) => {
+const getContact = async (req, res, next) => {
+    try {
+        const contactId = req.params.contactId
+        const result = await guestService.getContact(contactId)
+
+        res.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const getContactsList = async (req, res, next) => {
     try {
         const request = {
             name: req.query.name,
@@ -10,7 +23,7 @@ const getList = async (req, res, next) => {
             size: req.query.size,
         }
 
-        const result = await guestService.getList(request)
+        const result = await guestService.getContactsList(request)
         res.status(200).json({
             data: result.data,
             paging: result.paging
@@ -20,4 +33,17 @@ const getList = async (req, res, next) => {
     }
 }
 
-export default { getList }
+const getAddressesList = async (req, res, next) => {
+    try {
+        const contactId = req.params.contactId
+
+        const result = await guestService.getAddressesList(contactId)
+        res.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export default { getContact, getContactsList, getAddressesList }
