@@ -8,7 +8,7 @@ const checkContactExist = async (contactId) => {
 
     const totalContactInDB = await prismaClient.contact.count({
         where: {
-            username: 'dubi',
+            user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac',
             id: contactId
         }
     })
@@ -25,7 +25,7 @@ const getContact = async (contactId) => {
 
     const contact = await prismaClient.contact.findFirst({
         where: {
-            username: 'dubi',
+            user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac',
             id: contactId
         },
         select: {
@@ -52,7 +52,7 @@ const getContactsList = async (request) => {
     const filters = []
 
     filters.push({
-        username: 'dubi'
+        user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac'
     })
     
     if (request.name) {

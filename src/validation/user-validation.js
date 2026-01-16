@@ -1,23 +1,40 @@
 import Joi from "joi"
 
-const registerUserValidation = Joi.object({
-    username: Joi.string().max(100).required(),
-    password: Joi.string().max(100).required(),
-    name: Joi.string().max(100).required()
-})
+export const validateUserRegister = (payload) => {
+    const schema = Joi.object({
+        id: Joi.string().max(100).required(),
+        username: Joi.string().max(100).required(),
+        password: Joi.string().max(100).required(),
+        name: Joi.string().max(100).required(),
+        tokenVersion: Joi.number().optional().default(0),
+    })
 
-const loginUserValidation = Joi.object({
-    username: Joi.string().max(100).required(),
-    password: Joi.string().max(100).required(),
-})
+    return schema.validate(payload)
+}
 
-const getUserValidation = Joi.string().max(100).required()
+export const validateUserLogin = (payload) => {
+    const schema = Joi.object({
+        username: Joi.string().max(100).required(),
+        password: Joi.string().max(100).required(),
+    })
 
-const updateUserValidation = Joi.object({
-    username: Joi.string().max(100).required(),
-    password: Joi.string().max(100).optional(),
-    name: Joi.string().max(100).optional(),
-})
+    return schema.validate(payload)
+}
 
-export { getUserValidation, loginUserValidation, registerUserValidation, updateUserValidation }
+export const validateRefreshSession = (payload) => {
+    const schema = Joi.object({
+        refreshToken: Joi.string().required()
+    })
 
+    return schema.validate(payload)
+}
+
+export const validateUserUpdate = (payload) => {
+    const schema = Joi.object({
+        username: Joi.string().max(100).optional(),
+        password: Joi.string().max(100).optional(),
+        name: Joi.string().max(100).optional(),
+    })
+
+    return schema.validate(payload)
+}

@@ -14,10 +14,11 @@ datasource db {
 }
 
 model User {
-  username String @id @db.VarChar(100)
+  id String @id @db.VarChar(100)
+  username String @db.VarChar(100) @unique
   password String @db.VarChar(100)
   name String @db.VarChar(100)
-  token String? @db.VarChar(100)
+  tokenVersion Int @default(0)
   contacts Contact[]
 
   @@map("users")
@@ -29,8 +30,8 @@ model Contact {
   last_name String? @db.VarChar(100)
   email String? @db.VarChar(200)
   phone String? @db.VarChar(20)
-  username String @db.VarChar(100)
-  user User @relation(fields: [username], references: [username])
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
   addresses Address[]
 
   @@map("contacts")

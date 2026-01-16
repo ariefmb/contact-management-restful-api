@@ -7,7 +7,8 @@ const validate = (schema, request) => {
     })
 
     if (result.error) {
-        throw new ResponseError(400, result.error.message)
+        logger.error(`ERR: users - ${schema} = ${result.error.message}`)
+        throw new ResponseError(422, result.error.message)
     } else {
         return result.value
     }
