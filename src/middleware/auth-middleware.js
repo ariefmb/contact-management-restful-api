@@ -1,26 +1,15 @@
-import { prismaClient } from "../utils/database.js"
 
-export const authMiddleware = async (req, res, next) => {
-    try {
-        const token = req.get("Authorization")
-    
-        if (!token) {
-            return res.status(401).json({ errors: "Unauthorized" })
-        }
-            
-        const user = await prismaClient.user.findFirst({
-            where: {
-                token: token
-            }
+export const authMiddleware = () => {
+    const user = res.locals.user
+
+    if (!user) {
+        res.status(401).json({
+            status: false,
+            statusCode: 401,
+            message: "Forbidden"
         })
-        
-        if (!user) {
-            return res.status(401).json({ errors: "Unauthorized" })
-        }
-                
-        req.user = user
-        next()
-    } catch (error) {
-        next(error)
+        return
     }
+
+    return next()
 }

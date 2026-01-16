@@ -24,7 +24,7 @@ model User {
 }
 
 model Contact {
-  id Int @id @default(autoincrement())
+  id String @id @db.VarChar(100)
   first_name String @db.VarChar(100)
   last_name String? @db.VarChar(100)
   email String? @db.VarChar(200)
@@ -37,14 +37,14 @@ model Contact {
 }
 
 model Address {
-  id Int @id @default(autoincrement())
+  id String @id @db.VarChar(100)
   title String @db.VarChar(100)
   street String? @db.VarChar(255)
   city String? @db.VarChar(100)
   province String? @db.VarChar(100)
   country String @db.VarChar(100)
   postal_code String @db.VarChar(10)
-  contact_id Int
+  contact_id String
   contact Contact @relation(fields: [contact_id], references: [id])
 
   @@map("addresses")
