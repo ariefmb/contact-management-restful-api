@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import guestController from '../controller/guest-controller.js'
+import { guestGetAddressesListController, guestGetContactController, guestGetContactsListController } from '../controller/guest-controller.js'
 
 export const GuestRouter = Router()
 
-GuestRouter.get('/:contactId', guestController.getContact)
-GuestRouter.get('/', guestController.getContactsList)
-GuestRouter.get('/:contactId/addresses', guestController.getAddressesList)
+GuestRouter.get('/:contactId', guestGetContactController)
+GuestRouter.get('/', guestGetContactsListController)
+GuestRouter.get('/:contactId/addresses', guestGetAddressesListController)

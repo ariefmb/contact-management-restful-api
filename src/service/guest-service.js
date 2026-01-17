@@ -2,25 +2,12 @@ import { ResponseError } from "../error/response-error.js"
 import { prismaClient } from "../utils/database.js"
 import { validateContactSearch } from "../validation/contact-validation.js"
 
-const checkContactExist = async (contactId) => {
-    const totalContactInDB = await prismaClient.contact.count({
-        where: {
-            user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac',
-            id: contactId
-        }
-    })
-
-    if (totalContactInDB !== 1) {
-        throw new ResponseError(404, "Contact is not found")
-    }
-
-    return contactId
-}
-
-const getContact = async (contactId) => {
+export const getContact = async (contactId) => {
     const contact = await prismaClient.contact.findFirst({
         where: {
-            user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac',
+            user: {
+                username: 'dubiidooo'
+            },
             id: contactId
         },
         select: {
@@ -39,44 +26,50 @@ const getContact = async (contactId) => {
     return contact
 }
 
-const getContactsList = async (request) => {
-    request = validateContactSearch(request)
+export const getContactsList = async (request) => {
+    const { error, value } = validateContactSearch(request)
+
+    if (error) {
+        throw new ResponseError(422, error.details[0].message)
+    }
 
     // skip = ((page - 1) * size)
-    const skip = (request.page - 1) * request.size
+    const skip = (value.page - 1) * value.size
     const filters = []
 
     filters.push({
-        user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac'
+        user: {
+            username: 'dubiidooo'
+        },
     })
     
-    if (request.name) {
+    if (value.name) {
         filters.push({
             OR: [
                 {
                     first_name: {
-                        contains: request.name
+                        contains: value.name
                     },
                 },
                 {
                     last_name: {
-                        contains: request.name
+                        contains: value.name
                     }
                 }
             ]
         })
     }
-    if (request.email) {
+    if (value.email) {
         filters.push({
             email: {
-                contains: request.email
+                contains: value.email
             }
         })
     }
-    if (request.phone) {
+    if (value.phone) {
         filters.push({
             phone: {
-                contains: request.phone
+                contains: value.phone
             }
         })
     }
@@ -85,7 +78,7 @@ const getContactsList = async (request) => {
         where: {
             AND: filters,
         },
-        take: request.size,
+        take: value.size,
         skip: skip
     })
 
@@ -98,15 +91,26 @@ const getContactsList = async (request) => {
     return {
         data: contacts,
         paging: {
-            page: request.page,
+            page: value.page,
             total_item: totalItems,
-            total_page: Math.ceil(totalItems / request.size)
+            total_page: Math.ceil(totalItems / value.size)
         }
     }
 }
 
-const getAddressesList = async (contactId) => {
-    contactId = await checkContactExist(contactId)
+export const getAddressesList = async (contactId) => {
+    const totalContactInDB = await prismaClient.contact.count({
+        where: {
+            user: {
+                username: 'dubiidooo'
+            },
+            id: contactId
+        }
+    })
+
+    if (totalContactInDB !== 1) {
+        throw new ResponseError(404, "Contact is not found")
+    }
 
     return await prismaClient.address.findMany({
         where: {
@@ -123,5 +127,3 @@ const getAddressesList = async (contactId) => {
         }
     })
 }
-
-export default { getContact, getContactsList, getAddressesList }
