@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid'
 import { ResponseError } from "../error/response-error.js"
 import { prismaClient } from "../utils/database.js"
-import logger from '../utils/logging.js'
 import { validateContactCreate, validateContactSearch, validateContactUpdate } from "../validation/contact-validation.js"
 
 export const createContact = async (user, request) => {
@@ -9,7 +8,6 @@ export const createContact = async (user, request) => {
     const { error, value } = validateContactCreate(request)
 
     if (error) {
-        logger.error(`ERR: contacts - create = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
     
@@ -43,7 +41,6 @@ export const getContact = async (user, contactId) => {
     })
 
     if (!contact) {
-        logger.error('ERR: contacts - get = Contact is not found')
         throw new ResponseError(404, 'Contact is not found')
     }
 
@@ -54,7 +51,6 @@ export const updateContact = async (user, contactId, request) => {
     const { error, value } = validateContactUpdate(request)
 
     if (error) {
-        logger.error(`ERR: contacts - update = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
 
@@ -66,7 +62,6 @@ export const updateContact = async (user, contactId, request) => {
     })
 
     if (totalContactInDB !== 1) {
-        logger.error('ERR: contacts - update = Contact is not found')
         throw new ResponseError(404, "Contact is not found")
     }
 
@@ -99,7 +94,6 @@ export const removeContact = async (user, contactId) => {
     })
 
     if (!totalContactInDB) {
-        logger.error('ERR: contacts - remove = Contact is not found')
         throw new ResponseError(404, "Contact is not found")
     }
     
@@ -110,7 +104,6 @@ export const removeContact = async (user, contactId) => {
     })
 
     if (!removeAddresses) {
-        logger.error('ERR: contacts - remove = Failed remove addresses data')
         throw new ResponseError(422, "Failed remove addresses data")
     }
 
@@ -125,7 +118,6 @@ export const searchContacts = async (user, request) => {
     const { error, value } = validateContactSearch(request)
 
     if (error) {
-        logger.error(`ERR: contacts - search = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
 

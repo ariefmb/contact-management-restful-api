@@ -3,7 +3,6 @@ import { ResponseError } from '../error/response-error.js'
 import { prismaClient } from '../utils/database.js'
 import { hashing, verifyHashedData } from '../utils/hashing.js'
 import { signJWT, verifyJWT } from '../utils/jwt.js'
-import logger from '../utils/logging.js'
 import { validateRefreshSession, validateUserLogin, validateUserRegister, validateUserUpdate } from '../validation/user-validation.js'
 
 export const register = async (request) => {
@@ -11,7 +10,6 @@ export const register = async (request) => {
     const { error, value } = validateUserRegister(request)
 
     if (error) {
-        logger.error(`ERR: users - register = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
 
@@ -22,7 +20,6 @@ export const register = async (request) => {
     })
 
     if (countUser === 1) {
-        logger.error('ERR: users - register = Username already exists')
         throw new ResponseError(422, 'Username already exists')
     }
 
@@ -41,7 +38,6 @@ export const login = async (request) => {
     const { error, value } = validateUserLogin(request)
 
     if (error) {
-        logger.error(`ERR: users - login = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
     
@@ -52,14 +48,12 @@ export const login = async (request) => {
     })
 
     if (!user) {
-        logger.error('ERR: users - login = Invalid username or password')
         throw new ResponseError(401, 'Invalid username or password')
     }
     
     const isPasswordValid = verifyHashedData(value.password, user.password)
     
     if (!isPasswordValid) {
-        logger.error('ERR: users - login = Invalid username or password')
         throw new ResponseError(401, 'Invalid username or password')
     }
 
@@ -94,19 +88,16 @@ export const refreshSession = async (request) => {
     const { error, value } = validateRefreshSession(request)
 
     if (error) {
-        logger.error(`ERR: users - refresh session = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
 
     const { valid, expired, decoded } = verifyJWT(value.refreshToken)
 
     if (!valid) {
-        logger.error(`ERR: users - refresh session = ${expired ? 'Token expired' : 'Invalid token'}`)
         throw new ResponseError(401, expired ? 'Token expired' : 'Invalid token')
     }
     
     if (decoded.type !== 'refresh') {
-        logger.error('ERR: users - refresh session = Invalid token type')
         throw new ResponseError(401, 'Invalid token type')
     }
 
@@ -117,12 +108,10 @@ export const refreshSession = async (request) => {
     })
 
     if (!user) {
-        logger.error('ERR: users - login = Invalid username or password')
         throw new ResponseError(401, 'Invalid username or password')
     }
     
     if (decoded.tokenVersion !== user.tokenVersion) {
-        logger.error('ERR: token = Token revoked')
         throw new ResponseError(401, 'Token revoked')
     }
 
@@ -172,7 +161,6 @@ export const getUser = async (userId) => {
     })
 
     if (!user) {
-        logger.error('ERR: users - get = User is not found')
         throw new ResponseError(404, 'User is not found')
     }
 
@@ -183,7 +171,6 @@ export const updateUser = async (userId, request) => {
     const { error, value } = validateUserUpdate(request)
 
     if (error) {
-        logger.error(`ERR: users - update ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
 
@@ -235,7 +222,6 @@ export const logout = async (userId) => {
     })
 
     if (!user) {
-        logger.error('ERR: users - logout = User is not found')
         throw new ResponseError(404, 'User is not found')
     }
 

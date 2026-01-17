@@ -36,7 +36,7 @@ export const getAddressController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: addresses - get = ${error}`)
+        logger.error(`ERR: addresses - get = ${error.message}`)
         next(error)
     }
 }
@@ -59,7 +59,7 @@ export const updateAddressController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: addresses - update = ${error}`)
+        logger.error(`ERR: addresses - update = ${error.message}`)
         next(error)
     }
 }
@@ -78,7 +78,7 @@ export const removeAddressController = async (req, res, next) => {
             message: 'Success remove address data',
         })
     } catch (error) {
-        logger.error(`ERR: addresses - remove = ${error}`)
+        logger.error(`ERR: addresses - remove = ${error.message}`)
         next(error)
     }
 }
@@ -97,7 +97,7 @@ export const getAddressesListController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: addresses - get all = ${error}`)
+        logger.error(`ERR: addresses - get all = ${error.message}`)
         next(error)
     }
 }

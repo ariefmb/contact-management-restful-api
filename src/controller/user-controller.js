@@ -13,7 +13,7 @@ export const registerController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: users - register = ${error}`)
+        logger.error(`ERR: users - register = ${error.message}`)
         next(error)
     }
 }
@@ -30,7 +30,7 @@ export const loginController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: users - login = ${error}`)
+        logger.error(`ERR: users - login = ${error.message}`)
         next(error)
     }
 }
@@ -47,7 +47,7 @@ export const refreshTokenController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: users - refresh session = ${error}`)
+        logger.error(`ERR: users - refresh session = ${error.message}`)
         next(error)
     }
 }
@@ -64,7 +64,7 @@ export const getUserController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: users - get = ${error}`)
+        logger.error(`ERR: users - get = ${error.message}`)
         next(error)
     }
 }
@@ -85,7 +85,7 @@ export const updateUserController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: users - update = ${error}`)
+        logger.error(`ERR: users - update = ${error.message}`)
         next(error)
     }
 }
@@ -114,7 +114,7 @@ export const logoutController = async (req, res, next) => {
             message: 'Log out success'
         })
     } catch (error) {
-        logger.error(`ERR: users - logout = ${error}`)
+        logger.error(`ERR: users - logout = ${error.message}`)
         next(error)
     }
 }

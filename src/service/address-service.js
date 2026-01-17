@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid'
 import { ResponseError } from "../error/response-error.js"
 import { prismaClient } from "../utils/database.js"
-import logger from "../utils/logging.js"
 import { validateAddressCreate, validateAddressUpdate } from "../validation/address-validation.js"
 
 const checkContactExist = async (user, contactId) => {
@@ -13,7 +12,6 @@ const checkContactExist = async (user, contactId) => {
     })
 
     if (totalContactInDB !== 1) {
-        logger.error('ERR: addresses - check contact = Contact is not found')
         throw new ResponseError(404, "Contact is not found")
     }
 
@@ -27,7 +25,6 @@ export const createAddress = async (user, contactId, request) => {
     const { error, value } = validateAddressCreate(request)
     
     if (error) {
-        logger.error(`ERR: addresses - create = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
 
@@ -67,7 +64,6 @@ export const getAddress = async (user, contactId, addressId) => {
     })
 
     if (!address) {
-        logger.error('ERR: addresses - get = Address is not found')
         throw new ResponseError(404, 'Address is not found')
     }
 
@@ -80,7 +76,6 @@ export const updateAddress = async (user, contactId, addressId, request) => {
     const { error, value } = validateAddressUpdate(request)
 
     if (error) {
-        logger.error(`ERR: addresses - update ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
 
@@ -92,7 +87,6 @@ export const updateAddress = async (user, contactId, addressId, request) => {
     })
 
     if (totalAddressInDB !== 1) {
-        logger.error('ERR: addresses - update = Address is not found')
         throw new ResponseError(404, 'Address is not found')
     }
 

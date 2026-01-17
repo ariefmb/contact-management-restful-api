@@ -15,7 +15,7 @@ export const createContactController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: contacts - create = ${error}`)
+        logger.error(`ERR: contacts - create = ${error.message}`)
         next(error)
     }
 }
@@ -34,7 +34,7 @@ export const getContactController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: contacts - get = ${error}`)
+        logger.error(`ERR: contacts - get = ${error.message}`)
         next(error)
     }
 }
@@ -56,7 +56,7 @@ export const updateContactController = async (req, res, next) => {
             data: result
         })
     } catch (error) {
-        logger.error(`ERR: contacts - update = ${error}`)
+        logger.error(`ERR: contacts - update = ${error.message}`)
         next(error)
     }
 }
@@ -75,7 +75,7 @@ export const removeContactController = async (req, res, next) => {
             message: 'Success remove contact data'
         })
     } catch (error) {
-        logger.error(`ERR: contacts - remove = ${error}`)
+        logger.error(`ERR: contacts - remove = ${error.message}`)
         next(error)
     }
 }
@@ -101,7 +101,7 @@ export const searchContactsController = async (req, res, next) => {
             paging: result.paging
         })
     } catch (error) {
-        logger.error(`ERR: contacts - search = ${error}`)
+        logger.error(`ERR: contacts - search = ${error.message}`)
         next(error)
     }
 }
