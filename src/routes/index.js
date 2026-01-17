@@ -10,7 +10,7 @@ const _routes = [
     ['/users', UserRouter],
     ['/guest/contacts', GuestRouter],
     ['/contacts', ContactRouter],
-    ['/contacts/:contactId/addresses', AddressRouter]
+    ['/contacts', AddressRouter]
 ]
 
 _routes.forEach(route => {

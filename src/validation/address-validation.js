@@ -1,25 +1,29 @@
 import Joi from "joi"
 
-const createAddressValidation = Joi.object({
-    title: Joi.string().max(100).required(),
-    street: Joi.string().max(255).optional(),
-    city: Joi.string().max(100).optional(),
-    province: Joi.string().max(100).optional(),
-    country: Joi.string().max(100).required(),
-    postal_code: Joi.string().max(10).required(),
-})
+export const validateAddressCreate = (payload) => {
+    const schema = Joi.object({
+        id: Joi.string().max(100).required(),
+        title: Joi.string().max(100).required(),
+        street: Joi.string().max(255).optional(),
+        city: Joi.string().max(100).optional(),
+        province: Joi.string().max(100).optional(),
+        country: Joi.string().max(100).required(),
+        postal_code: Joi.string().max(10).required(),
+    })
 
-const getAddressValidation = Joi.number().positive().required()
+    return schema.validate(payload)
+}
 
-const updateAddressValidation = Joi.object({
-    id: Joi.number().positive().required(),
-    title: Joi.string().max(100).required(),
-    street: Joi.string().max(255).optional(),
-    city: Joi.string().max(100).optional(),
-    province: Joi.string().max(100).optional(),
-    country: Joi.string().max(100).required(),
-    postal_code: Joi.string().max(10).required(),
-})
+export const validateAddressUpdate = (payload) => {
+    const schema = Joi.object({
+        id: Joi.string().max(100).required(),
+        title: Joi.string().max(100).optional(),
+        street: Joi.string().max(255).optional(),
+        city: Joi.string().max(100).optional(),
+        province: Joi.string().max(100).optional(),
+        country: Joi.string().max(100).optional(),
+        postal_code: Joi.string().max(10).optional(),
+    })
 
-export { createAddressValidation, getAddressValidation, updateAddressValidation }
-
+    return schema.validate(payload)
+}

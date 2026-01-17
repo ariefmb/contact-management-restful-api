@@ -8,12 +8,12 @@ export const createContact = async (user, request) => {
     request.id = uuid()
     const { error, value } = validateContactCreate(request)
 
-    value.user_id = user.id
-
     if (error) {
         logger.error(`ERR: contacts - create = ${error.details[0].message}`)
         throw new ResponseError(422, error.details[0].message)
     }
+    
+    value.user_id = user.id
     
     return prismaClient.contact.create({
         data: value,
@@ -91,14 +91,14 @@ export const updateContact = async (user, contactId, request) => {
 }
 
 export const removeContact = async (user, contactId) => {
-    const totalInDB = await prismaClient.contact.findFirst({
+    const totalContactInDB = await prismaClient.contact.findFirst({
         where: {
             user_id: user.id,
             id: contactId
         }
     })
 
-    if (!totalInDB) {
+    if (!totalContactInDB) {
         logger.error('ERR: contacts - remove = Contact is not found')
         throw new ResponseError(404, "Contact is not found")
     }

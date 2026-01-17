@@ -1,9 +1,12 @@
 import { Router } from 'express'
-import addressController from '../controller/address-controller.js'
+import { createAddressController, getAddressController, getAddressesListController, removeAddressController, updateAddressController } from '../controller/address-controller.js'
+import authMiddleware from '../middleware/auth-middleware.js'
 
 export const AddressRouter = Router()
-AddressRouter.post('/', addressController.create)
-AddressRouter.get('/:addressId', addressController.get)
-AddressRouter.put('/:addressId', addressController.update)
-AddressRouter.delete('/:addressId', addressController.remove)
-AddressRouter.get('/', addressController.list)
+
+AddressRouter.use(authMiddleware)
+AddressRouter.post('/:contactId/addresses/create', createAddressController)
+AddressRouter.get('/:contactId/addresses/:addressId', getAddressController)
+AddressRouter.put('/:contactId/addresses/:addressId/update', updateAddressController)
+AddressRouter.delete('/:contactId/addresses/:addressId/remove', removeAddressController)
+AddressRouter.get('/:contactId/addresses', getAddressesListController)
