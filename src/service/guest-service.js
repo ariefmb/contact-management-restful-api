@@ -1,11 +1,8 @@
 import { ResponseError } from "../error/response-error.js"
 import { prismaClient } from "../utils/database.js"
-import { getContactValidation, searchContactValidation } from "../validation/contact-validation.js"
-import { validate } from "../validation/validation.js"
+import { validateContactSearch } from "../validation/contact-validation.js"
 
 const checkContactExist = async (contactId) => {
-    contactId = validate(getContactValidation, contactId)
-
     const totalContactInDB = await prismaClient.contact.count({
         where: {
             user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac',
@@ -21,8 +18,6 @@ const checkContactExist = async (contactId) => {
 }
 
 const getContact = async (contactId) => {
-    contactId = validate(getContactValidation, contactId)
-
     const contact = await prismaClient.contact.findFirst({
         where: {
             user_id: 'b1decf61-6329-46e0-8c39-55a1b0e6ffac',
@@ -45,7 +40,7 @@ const getContact = async (contactId) => {
 }
 
 const getContactsList = async (request) => {
-    request = validate(searchContactValidation, request)
+    request = validateContactSearch(request)
 
     // skip = ((page - 1) * size)
     const skip = (request.page - 1) * request.size

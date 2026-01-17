@@ -1,14 +1,22 @@
+import { v4 as uuid } from 'uuid'
 import { ResponseError } from "../error/response-error.js"
 import { prismaClient } from "../utils/database.js"
-import { createContactValidation, getContactValidation, searchContactValidation, updateContactValidation } from "../validation/contact-validation.js"
-import { validate } from "../validation/validation.js"
+import logger from '../utils/logging.js'
+import { validateContactCreate, validateContactSearch, validateContactUpdate } from "../validation/contact-validation.js"
 
-const create = async (user, request) => {
-    const contact = validate(createContactValidation, request)
-    contact.username = user.username
+export const createContact = async (user, request) => {
+    request.id = uuid()
+    const { error, value } = validateContactCreate(request)
+
+    value.user_id = user.id
+
+    if (error) {
+        logger.error(`ERR: contacts - create = ${error.details[0].message}`)
+        throw new ResponseError(422, error.details[0].message)
+    }
     
     return prismaClient.contact.create({
-        data: contact,
+        data: value,
         select: {
             id: true,
             first_name: true,
@@ -19,12 +27,10 @@ const create = async (user, request) => {
     })
 }
 
-const get = async (user, contactId) => {
-    contactId = validate(getContactValidation, contactId)
-
+export const getContact = async (user, contactId) => {
     const contact = await prismaClient.contact.findFirst({
         where: {
-            username: user.username,
+            user_id: user.id,
             id: contactId
         },
         select: {
@@ -37,23 +43,30 @@ const get = async (user, contactId) => {
     })
 
     if (!contact) {
+        logger.error('ERR: contacts - get = Contact is not found')
         throw new ResponseError(404, 'Contact is not found')
     }
 
     return contact
 }
 
-const update = async (user, contactId, request) => {
-    const contact = validate(updateContactValidation, request)
+export const updateContact = async (user, contactId, request) => {
+    const { error, value } = validateContactUpdate(request)
+
+    if (error) {
+        logger.error(`ERR: contacts - update = ${error.details[0].message}`)
+        throw new ResponseError(422, error.details[0].message)
+    }
 
     const totalContactInDB = await prismaClient.contact.count({
         where: {
-            username: user.username,
+            user_id: user.id,
             id: contactId
         }
     })
 
     if (totalContactInDB !== 1) {
+        logger.error('ERR: contacts - update = Contact is not found')
         throw new ResponseError(404, "Contact is not found")
     }
 
@@ -62,10 +75,10 @@ const update = async (user, contactId, request) => {
             id: contactId
         },
         data: {
-            first_name: contact.first_name,
-            last_name: contact.last_name,
-            email: contact.email,
-            phone: contact.phone
+            first_name: value.first_name,
+            last_name: value.last_name,
+            email: value.email,
+            phone: value.phone
         },
         select: {
             id: true,
@@ -77,66 +90,80 @@ const update = async (user, contactId, request) => {
     })
 }
 
-const remove = async (user, contactId) => {
-    contactId = validate(getContactValidation, contactId)
-
+export const removeContact = async (user, contactId) => {
     const totalInDB = await prismaClient.contact.findFirst({
         where: {
-            username: user.username,
+            user_id: user.id,
             id: contactId
         }
     })
 
     if (!totalInDB) {
-        throw new ResponseError(404, "Contact not found")
+        logger.error('ERR: contacts - remove = Contact is not found')
+        throw new ResponseError(404, "Contact is not found")
+    }
+    
+    const removeAddresses = await prismaClient.address.deleteMany({
+        where: {
+            contact_id: contactId
+        }
+    })
+
+    if (!removeAddresses) {
+        logger.error('ERR: contacts - remove = Failed remove addresses data')
+        throw new ResponseError(422, "Failed remove addresses data")
     }
 
-    return prismaClient.contact.delete({
+    return await prismaClient.contact.delete({
         where: {
             id: contactId
         }
     })
 }
 
-const search = async (user, request) => {
-    request = validate(searchContactValidation, request)
+export const searchContacts = async (user, request) => {
+    const { error, value } = validateContactSearch(request)
+
+    if (error) {
+        logger.error(`ERR: contacts - search = ${error.details[0].message}`)
+        throw new ResponseError(422, error.details[0].message)
+    }
 
     // skip = ((page - 1) * size)
-    const skip = (request.page - 1) * request.size
+    const skip = (value.page - 1) * value.size
 
     const filters = []
 
     filters.push({
-        username: user.username
+        user_id: user.id
     })
-    
-    if (request.name) {
+    if (value.name) {
         filters.push({
             OR: [
                 {
                     first_name: {
-                        contains: request.name
+                        contains: value.name
                     },
                 },
                 {
                     last_name: {
-                        contains: request.name
+                        contains: value.name
                     }
                 }
             ]
         })
     }
-    if (request.email) {
+    if (value.email) {
         filters.push({
             email: {
-                contains: request.email
+                contains: value.email
             }
         })
     }
-    if (request.phone) {
+    if (value.phone) {
         filters.push({
             phone: {
-                contains: request.phone
+                contains: value.phone
             }
         })
     }
@@ -145,7 +172,7 @@ const search = async (user, request) => {
         where: {
             AND: filters,
         },
-        take: request.size,
+        take: value.size,
         skip: skip
     })
 
@@ -158,11 +185,9 @@ const search = async (user, request) => {
     return {
         data: contacts,
         paging: {
-            page: request.page,
+            page: value.page,
             total_item: totalItems,
-            total_page: Math.ceil(totalItems / request.size)
+            total_page: Math.ceil(totalItems / value.size)
         }
     }
 }
-
-export default { create, get, update, remove, search }

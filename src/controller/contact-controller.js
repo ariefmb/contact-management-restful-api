@@ -1,69 +1,88 @@
-import contactService from "../service/contact-service.js"
+import { createContact, getContact, removeContact, searchContacts, updateContact } from "../service/contact-service.js"
+import logger from "../utils/logging.js"
 
-const create = async (req, res, next) => {
+export const createContactController = async (req, res, next) => {
     try {
-        const user = req.user
+        const user = res.locals.user
         const request = req.body
-        const result = await contactService.create(user, request)
+        const result = await createContact(user, request)
 
-        res.status(200).json({
+        logger.info('Success create new contact')
+        res.status(201).json({
+            status: true,
+            statusCode: 201,
+            message: 'Success create new contact',
             data: result
         })
     } catch (error) {
+        logger.error(`ERR: contacts - create = ${error}`)
         next(error)
     }
 }
 
-const get = async (req, res, next) => {
+export const getContactController = async (req, res, next) => {
     try {
-        const user = req.user
+        const user = res.locals.user
         const contactId = req.params.contactId
+        const result = await getContact(user, contactId)
 
-        const result = await contactService.get(user, contactId)
-
+        logger.info('Success get contact data')
         res.status(200).json({
+            status: true,
+            statusCode: 200,
+            message: 'Success get contact data',
             data: result
         })
     } catch (error) {
+        logger.error(`ERR: contacts - get = ${error}`)
         next(error)
     }
 }
 
-const update = async (req, res, next) => {
+export const updateContactController = async (req, res, next) => {
     try {
-        const user = req.user
+        const user = res.locals.user
         const request = req.body
-
-        const contactId = Number(req.params.contactId)
+        const contactId = req.params.contactId
         request.id = contactId
 
-        const result = await contactService.update(user, contactId, request)
+        const result = await updateContact(user, contactId, request)
 
+        logger.info('Success update contact data')
         res.status(200).json({
+            status: true,
+            statusCode: 200,
+            message: 'Success update contact data',
             data: result
         })
     } catch (error) {
+        logger.error(`ERR: contacts - update = ${error}`)
         next(error)
     }
 }
 
-const remove = async (req, res, next) => {
+export const removeContactController = async (req, res, next) => {
     try {
-        const user = req.user
+        const user = res.locals.user
         const contactId = req.params.contactId
 
-        await contactService.remove(user, contactId)
+        await removeContact(user, contactId)
+
+        logger.info('Success remove contact data')
         res.status(200).json({
-            data: "OK"
+            status: true,
+            statusCode: 200,
+            message: 'Success remove contact data'
         })
     } catch (error) {
+        logger.error(`ERR: contacts - remove = ${error}`)
         next(error)
     }
 }
 
-const search = async (req, res, next) => {
+export const searchContactsController = async (req, res, next) => {
     try {
-        const user = req.user
+        const user = res.locals.user
         const request = {
             name: req.query.name,
             email: req.query.email,
@@ -71,15 +90,18 @@ const search = async (req, res, next) => {
             page: req.query.page,
             size: req.query.size
         }
+        const result = await searchContacts(user, request)
 
-        const result = await contactService.search(user, request)
+        logger.info('Success search contacts data')
         res.status(200).json({
+            status: true,
+            statusCode: 200,
+            message: 'Success search contacts data',
             data: result.data,
             paging: result.paging
         })
     } catch (error) {
+        logger.error(`ERR: contacts - search = ${error}`)
         next(error)
     }
 }
-
-export default { create, get, update, remove, search }

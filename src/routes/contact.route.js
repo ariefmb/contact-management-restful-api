@@ -1,10 +1,12 @@
 import { Router } from 'express'
-import contactController from '../controller/contact-controller.js'
+import { createContactController, getContactController, removeContactController, searchContactsController, updateContactController } from '../controller/contact-controller.js'
+import authMiddleware from '../middleware/auth-middleware.js'
 
 export const ContactRouter = Router()
-ContactRouter.post('/', contactController.create)
-ContactRouter.get('/:contactId', contactController.get)
-ContactRouter.put('/:contactId', contactController.update)
-ContactRouter.delete('/:contactId', contactController.remove)
-ContactRouter.get('/', contactController.search)
 
+ContactRouter.use(authMiddleware)
+ContactRouter.post('/create', createContactController)
+ContactRouter.get('/:contactId', getContactController)
+ContactRouter.put('/:contactId/update', updateContactController)
+ContactRouter.delete('/:contactId/remove', removeContactController)
+ContactRouter.get('/', searchContactsController)
