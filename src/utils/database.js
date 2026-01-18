@@ -9,7 +9,7 @@ const adapter = new PrismaMariaDb({
     user: CONFIG.db_user,
     password: CONFIG.db_pass,
     database: CONFIG.db_name,
-    connectionLimit: 5
+    connectionLimit: 1
 })
 
 export const prismaClient = new PrismaClient({
