@@ -1,15 +1,16 @@
 {
     "version": 2,
+    "public": true,
     "builds": [
         {
-            "src": "main.js",
+            "src": "src/main.js",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "main.js"
+            "dest": "src/main.js"
         }
     ]
 }
