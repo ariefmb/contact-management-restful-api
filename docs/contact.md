@@ -2,11 +2,11 @@
 
 ## Create Contact API
 
-Endpoint : POST /api/contacts
+Endpoint : POST /api/contacts/create
 
 Headers :
 
-- Authorization : token
+- Authorization : accessToken
 
 Request Body :
 
@@ -23,10 +23,13 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 201,
+    "message": "Success",
     "data": {
-        "id": 1,
-        "fist_name": "Arief",
-        "last_name": "Budiman",
+        "id": "uuid",
+        "fist_name": "Dubi",
+        "last_name": "Dubiidooo",
         "email": "arief@test.com",
         "phone": "931381321"
     }
@@ -37,26 +40,28 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Email is not valid format"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Email is not valid format"
 }
 ```
 
 ## Update Contact API
 
-Endpoint : **PUT** `/api/contacts/:contactId`
+Endpoint : **PUT** `/api/contacts/:contactId/update`
 
 Headers :
 
-- Authorization : token
+- Authorization : accessToken
 
 Request Body :
 
 ```json
 {
-    "fist_name": "Arief",
-    "last_name": "Budiman",
-    "email": "arief@test.com",
-    "phone": "931381321"
+    "fist_name": "Arief", //optional
+    "last_name": "Budiman", //optional
+    "email": "arief@test.com", //optional
+    "phone": "931381321" //optional
 }
 ```
 
@@ -64,6 +69,9 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": {
         "id": 1,
         "fist_name": "Arief",
@@ -78,7 +86,9 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Email is not valid format"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Email is not valid format"
 }
 ```
 
@@ -88,12 +98,15 @@ Endpoint : **GET** `/api/contacts/:contactId`
 
 Headers :
 
-- Authorization : token
+- Authorization : accessToken
 
 Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": {
         "id": 1,
         "fist_name": "Arief",
@@ -108,7 +121,9 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Contact is not found"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Contact is not found"
 }
 ```
 
@@ -118,7 +133,7 @@ Endpoint : **POST** `/api/contacts`
 
 Headers :
 
-- Authorization : token
+- Authorization : accessToken
 
 Query params :
 
@@ -132,6 +147,9 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": [
         {
             "id": 1,
@@ -160,23 +178,27 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Contact is not found"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Contact is not found"
 }
 ```
 
 ## Remove Contact API
 
-Endpoint : **DELETE** `/api/contacts/:contactId`
+Endpoint : **DELETE** `/api/contacts/:contactId/remove`
 
 Headers :
 
-- Authorization : token
+- Authorization : accessToken
 
 Response Body Success :
 
 ```json
 {
-    "data": "OK"
+    "status": true,
+    "statusCode": 200,
+    "message": "Success"
 }
 ```
 
@@ -184,6 +206,8 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Contact is not found"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Contact is not found"
 }
 ```

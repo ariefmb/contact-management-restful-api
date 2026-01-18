@@ -18,7 +18,11 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 201,
+    "message": "Success",
     "data": {
+        "id": "uuid",
         "username": "ariefmb",
         "name": "Dubiidooo"
     }
@@ -29,7 +33,9 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Username already registered"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Username already registered"
 }
 ```
 
@@ -50,8 +56,17 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": {
-        "token": "unique-token"
+        "user": {
+            "id": "uuid",
+            "usernamne": "ariefmb",
+            "name": "Dubiidooo"
+        },
+        "accessToken": "unique-access-token",
+        "refreshToken": "unique-refresh-token"
     }
 }
 ```
@@ -60,23 +75,62 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Username or Password wrong"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Username or Password wrong"
 }
 ```
 
-## Update User API
+## Refresh Token API
 
-Endpoint : **PATCH** `/api/users/current`
-
-Headers :
-
-- Authorization : token
+Endpoint : **POST** `/api/users/current/refresh`
 
 Request Body :
 
 ```json
 {
-    "name": "Dubiidooo lagi", //optional
+    "refreshToken": "unique-refresh-token"
+}
+```
+
+Response Body Success :
+
+```json
+{
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
+    "data": {
+        "accessToken": "unique-access-token",
+        "refreshToken": "unique-refresh-token"
+    }
+}
+```
+
+Response Body Error :
+
+```json
+{
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Refresh token wrong"
+}
+```
+
+## Update User API
+
+Endpoint : **PATCH** `/api/users/current/update`
+
+Headers :
+
+- Authorization : `accessToken`
+
+Request Body :
+
+```json
+{
+    "username": "new username", //optional
+    "name": "new name", //optional
     "password": "new password" //optional
 }
 ```
@@ -85,9 +139,13 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": {
-        "username": "ariefmb",
-        "name": "Dubiidooo lagi"
+        "id": "uuid",
+        "username": "new username",
+        "name": "new name"
     }
 }
 ```
@@ -96,7 +154,9 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Name length max 100"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Name length max 100"
 }
 ```
 
@@ -106,13 +166,17 @@ Endpoint : **GET** `/api/users/current`
 
 Headers :
 
-- Authorization : token
+- Authorization : `accessToken`
 
 Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": {
+        "id": "uuid",
         "username": "ariefmb",
         "name": "Dubiidooo"
     }
@@ -123,23 +187,27 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Unauthorized"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Unauthorized"
 }
 ```
 
 ## Logout User API
 
-Endpoint : **DELETE** `/api/users/logout`
+Endpoint : **POST** `/api/users/logout`
 
 Headers :
 
-- Authorization : token
+- Authorization : `accessToken`
 
 Response Body Success :
 
 ```json
 {
-    "data": "OK"
+    "status": true,
+    "statusCode": 200,
+    "message": "Success log out"
 }
 ```
 
@@ -147,6 +215,8 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Unauthorized"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Unauthorized"
 }
 ```

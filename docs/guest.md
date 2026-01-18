@@ -8,8 +8,11 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": {
-        "id": 1,
+        "id": "uuid",
         "fist_name": "Arief",
         "last_name": "Budiman",
         "email": "arief@test.com",
@@ -22,7 +25,9 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Contact is not found"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Contact is not found"
 }
 ```
 
@@ -42,16 +47,19 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": [
         {
-            "id": 1,
+            "id": "uuid",
             "fist_name": "Arief",
             "last_name": "Budiman",
             "email": "arief@test.com",
             "phone": "931381321"
         },
         {
-            "id": 2,
+            "id": "uuid",
             "fist_name": "Dubi",
             "last_name": "Dubido",
             "email": "dubi@test.com",
@@ -70,7 +78,9 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Contact is not found"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Contact is not found"
 }
 ```
 
@@ -82,9 +92,12 @@ Response Body Success :
 
 ```json
 {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success",
     "data": [
         {
-            "id": 1,
+            "id": "uuid",
             "title": "Home Address",
             "street": "Jalan ABC",
             "city": "Kota DEF",
@@ -93,7 +106,7 @@ Response Body Success :
             "postal_code": "12345"
         },
         {
-            "id": 2,
+            "id": "uuid",
             "title": "Work Address",
             "street": "Jalan ZYX",
             "city": "Kota WVU",
@@ -109,6 +122,8 @@ Response Body Error :
 
 ```json
 {
-    "errors": "Contact is not found"
+    "status": false,
+    "statusCode": 4xx / 5xx,
+    "message": "Contact is not found"
 }
 ```
