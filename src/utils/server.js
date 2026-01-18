@@ -1,6 +1,7 @@
 import cors from "cors"
 import express from 'express'
 import { errorMiddleware } from "../middleware/error-middleware.js"
+import { HealthRouter } from "../routes/health.route.js"
 import { routes } from "../routes/index.js"
 
 const createServer = () => {
@@ -25,6 +26,7 @@ const createServer = () => {
     app.use(express.urlencoded({ extended: false }))
     app.use(express.json())
 
+    app.use('/', HealthRouter)
     app.use('/api', routes)
     app.use(errorMiddleware)
 
