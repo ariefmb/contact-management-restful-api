@@ -10,8 +10,7 @@
         "start": "node src/api/index.js",
         "dev": "nodemon",
         "test": "jest",
-        "vercel-build": "prisma generate",
-        "build": "tsc"
+        "postinstall": "prisma generate"
     },
     "dependencies": {
         "@prisma/adapter-mariadb": "^7.2.0",

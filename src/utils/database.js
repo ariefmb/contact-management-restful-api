@@ -1,5 +1,6 @@
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
-import { PrismaClient } from "../../generated/prisma/client.ts"
+// import { PrismaClient } from "../../generated/prisma/client.ts"
+import { PrismaClient } from '@prisma/client'
 import CONFIG from '../config/environment.js'
 import logger from './logging.js'
 
