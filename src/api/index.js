@@ -1,5 +1,5 @@
-import logger from "./utils/logging.js";
-import createServer from "./utils/server.js";
+import logger from "../utils/logging.js"
+import createServer from "../utils/server.js"
 
 const app = createServer()
 
