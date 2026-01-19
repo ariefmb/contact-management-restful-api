@@ -5,7 +5,7 @@ import logger from './logging.js'
 
 const adapter = new PrismaMariaDb({
     host: CONFIG.db_host,
-    port: 3306,
+    port: CONFIG.db_port,
     user: CONFIG.db_user,
     password: CONFIG.db_pass,
     database: CONFIG.db_name,
