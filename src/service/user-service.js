@@ -225,7 +225,5 @@ export const logout = async (userId) => {
         throw new ResponseError(404, 'User is not found')
     }
 
-   
-
     return user
 }
