@@ -36,9 +36,6 @@ A modern, production-ready RESTful API built with Node.js for managing users, co
 9. [Technologies Used](#-technologies-used)
 10. [Author](#-author)
 
-The emoji creates an extra segment in the anchor. Most Markdown renderers convert `## ✨ Features` to `#-features`, so include the leading hyphen in your links.
-
-
 ## 📦 Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -282,4 +279,4 @@ npm postinstall
 
 ## 👨‍💻 Author
 
-**Built with ❤️ by ariefmb**
+<p style="font-family: Papyrus, Impact; font-size: 20px;">built with <b>Passion</b> by ariefmb</p>
